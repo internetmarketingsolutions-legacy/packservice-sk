@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit colors="true" bootstrap="vendor/autoload.php">
+    <testsuites>
+        <testsuite name="An unofficial packservice-sk api implementation">
+            <directory>./tests/InternetMarketingSolutions/PackserviceSk</directory>
+        </testsuite>
+    </testsuites>
+    <filter>
+        <whitelist>
+            <directory>./src/InternetMarketingSolutions/PackserviceSk/</directory>
+        </whitelist>
+    </filter>
+</phpunit>
