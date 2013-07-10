@@ -205,6 +205,7 @@ class Package
 
     /**
      * @var Product[]
+     * @Assert\Valid
      * @Serializer\SerializedName("polozky")
      * @Serializer\XmlList(inline=false, entry="polozka")
      * @Serializer\Type("ArrayCollection<InternetMarketingSolutions\PackserviceSk\Import\Product>")
