@@ -26,20 +26,32 @@ class Xml
 
     /**
      * @param Package $package
-     * @return $this
+     * @param bool $stopPropagation
+     * @return Package
      */
-    public function addPackage(Package $package)
+    public function addPackage(Package $package = null, $stopPropagation = false)
     {
+        if(is_null($package)) {
+            $package = new Package();
+        }
+        if (!$stopPropagation) {
+            $package->setXml($this, true);
+        }
         $this->packages->add($package);
-        return $this;
+        return $package;
     }
 
     /**
      * @param Package $package
+     * @param bool $stopPropagation
      * @return $this
      */
-    public function removePackage(Package $package)
+    public function removePackage(Package $package, $stopPropagation = false)
     {
+        if (!$stopPropagation) {
+            $package->setXml(null, true);
+        }
+
         $this->packages->removeElement($package);
         return $this;
     }

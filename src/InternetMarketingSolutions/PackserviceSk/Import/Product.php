@@ -13,6 +13,11 @@ use Symfony\Component\Validator\ExecutionContextInterface;
 class Product
 {
     /**
+     * @var Package
+     */
+    protected $package;
+
+    /**
      * @var string
      * @Serializer\SerializedName("idpol")
      */
@@ -61,6 +66,39 @@ class Product
      * @Serializer\SerializedName("dph")
      */
     protected $vat;
+
+    /**
+     * @param Package $package
+     * @param bool $stopPropagation
+     * @return $this
+     */
+    public function setPackage(Package $package = null, $stopPropagation = false)
+    {
+        if (!$stopPropagation) {
+            if(!is_null($this->package)) {
+                $this->package->removeProduct($this, true);
+            }
+            $package->addProduct($this, true);
+        }
+        $this->package = $package;
+        return $this;
+    }
+
+    /**
+     * @return Package
+     */
+    public function getPackage()
+    {
+        return $this->package;
+    }
+
+    /**
+     * @return Package
+     */
+    public function end()
+    {
+        return $this->getPackage();
+    }
 
     /**
      * @param string $serviceid

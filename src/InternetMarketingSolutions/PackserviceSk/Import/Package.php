@@ -12,8 +12,12 @@ use Symfony\Component\Validator\Constraints as Assert;
 class Package
 {
     /**
-     * @var int
+     * @var Xml
+     */
+    protected $xml;
 
+    /**
+     * @var int
      * @Assert\NotBlank()
      * @Serializer\SerializedName("id")
      */
@@ -21,7 +25,6 @@ class Package
 
     /**
      * @var string
-
      * @Assert\NotBlank()
      * @Serializer\SerializedName("dodanie")
      */
@@ -35,7 +38,6 @@ class Package
 
     /**
      * @var string
-
      * @Assert\NotBlank()
      * @Serializer\SerializedName("meno")
      */
@@ -43,7 +45,6 @@ class Package
 
     /**
      * @var string
-
      * @Assert\NotBlank()
      * @Serializer\SerializedName("ulica")
      */
@@ -51,7 +52,6 @@ class Package
 
     /**
      * @var string
-
      * @Assert\NotBlank()
      * @Serializer\SerializedName("psc")
      */
@@ -59,7 +59,6 @@ class Package
 
     /**
      * @var string
-
      * @Assert\NotBlank()
      * @Serializer\SerializedName("mesto")
      */
@@ -215,6 +214,39 @@ class Package
     public function __construct()
     {
         $this->products = new ArrayCollection();
+    }
+
+    /**
+     * @param Xml $xml
+     * @param bool $stopPropagation
+     * @return $this
+     */
+    public function setXml(Xml $xml = null, $stopPropagation = false)
+    {
+        if (!$stopPropagation) {
+            if(!is_null($this->xml)) {
+                $this->xml->removePackage($this, true);
+            }
+            $xml->addPackage($this, true);
+        }
+        $this->xml = $xml;
+        return $this;
+    }
+
+    /**
+     * @return Xml
+     */
+    public function getXml()
+    {
+        return $this->xml;
+    }
+
+    /**
+     * @return Xml
+     */
+    public function end()
+    {
+        return $this->getXml();
     }
 
     /**
@@ -759,20 +791,31 @@ class Package
 
     /**
      * @param Product $product
-     * @return $this
+     * @param bool $stopPropagation
+     * @return Product
      */
-    public function addProduct(Product $product)
+    public function addProduct(Product $product = null, $stopPropagation = false)
     {
+        if(is_null($product)) {
+            $product = new Product();
+        }
+        if (!$stopPropagation) {
+            $product->setPackage($this, true);
+        }
         $this->products->add($product);
-        return $this;
+        return $product;
     }
 
     /**
      * @param Product $product
+     * @param $stopPropagation
      * @return $this
      */
-    public function removeProduct(Product $product)
+    public function removeProduct(Product $product, $stopPropagation = fals)
     {
+        if (!$stopPropagation) {
+            $product->setPackage(null, true);
+        }
         $this->products->removeElement($product);
         return $this;
     }
