@@ -2,59 +2,62 @@
 
 namespace InternetMarketingSolutions\PackserviceSk\Import;
 
-use InternetMarketingSolutions\PackserviceSk\Annotation as PackserviceSk;
 use JMS\Serializer\Annotation as Serializer;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\ExecutionContextInterface;
 
 /**
+ * @Assert\Callback(methods={"isIdValid"})
  * @Serializer\XmlRoot("polozka")
  */
 class Product
 {
     /**
      * @var string
-     * @PackserviceSk\RequiredOr("id")
      * @Serializer\SerializedName("idpol")
      */
     protected $serviceid;
 
     /**
      * @var string
-     * @PackserviceSk\RequiredOr("id")
      * @Serializer\SerializedName("ean")
      */
     protected $ean;
 
     /**
      * @var string
-     * @PackserviceSk\RequiredOr("id")
      * @Serializer\SerializedName("ref")
      */
     protected $sku;
 
     /**
      * @var float
-     * @PackserviceSk\Required
+     * @Assert\NotNull()
+     * @Assert\NotBlank()
      * @Serializer\SerializedName("pocet")
      */
     protected $amount;
 
     /**
      * @var string
-     * @PackserviceSk\Required
+     * @Assert\NotNull()
+     * @Assert\NotBlank()
      * @Serializer\SerializedName("nazov")
      */
     protected $name;
 
     /**
      * @var float
-     * @PackserviceSk\Required
+     * @Assert\NotNull()
+     * @Assert\NotBlank()
      * @Serializer\SerializedName("cena")
      */
     protected $price;
 
     /**
      * @var float
-     * @PackserviceSk\Required
+     * @Assert\NotNull()
+     * @Assert\NotBlank()
      * @Serializer\SerializedName("dph")
      */
     protected $vat;
@@ -183,5 +186,18 @@ class Product
     public function getVat()
     {
         return $this->vat;
+    }
+
+    /**
+     * @param ExecutionContextInterface $context
+     */
+    public function isIdValid(ExecutionContextInterface $context)
+    {
+        if(!$this->getServiceid() && !$this->getEan() && !$this->getSku()) {
+            $message = 'One of this 3 properties have to be set: serviceid, ean, sku';
+            $context->addViolationAt('serviceid', $message);
+            $context->addViolationAt('ean', $message);
+            $context->addViolationAt('sku', $message);
+        }
     }
 }

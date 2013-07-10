@@ -3,8 +3,8 @@
 namespace InternetMarketingSolutions\PackserviceSk\Import;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use InternetMarketingSolutions\PackserviceSk\Annotation as PackserviceSk;
 use JMS\Serializer\Annotation as Serializer;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @Serializer\XmlRoot("zasielka")
@@ -13,14 +13,16 @@ class Package
 {
     /**
      * @var int
-     * @PackserviceSk\Required
+
+     * @Assert\NotBlank()
      * @Serializer\SerializedName("id")
      */
     protected $id;
 
     /**
      * @var string
-     * @PackserviceSk\Required
+
+     * @Assert\NotBlank()
      * @Serializer\SerializedName("dodanie")
      */
     protected $delivery;
@@ -33,28 +35,32 @@ class Package
 
     /**
      * @var string
-     * @PackserviceSk\Required
+
+     * @Assert\NotBlank()
      * @Serializer\SerializedName("meno")
      */
     protected $name;
 
     /**
      * @var string
-     * @PackserviceSk\Required
+
+     * @Assert\NotBlank()
      * @Serializer\SerializedName("ulica")
      */
     protected $street;
 
     /**
      * @var string
-     * @PackserviceSk\Required
+
+     * @Assert\NotBlank()
      * @Serializer\SerializedName("psc")
      */
     protected $zip;
 
     /**
      * @var string
-     * @PackserviceSk\Required
+
+     * @Assert\NotBlank()
      * @Serializer\SerializedName("mesto")
      */
     protected $city;

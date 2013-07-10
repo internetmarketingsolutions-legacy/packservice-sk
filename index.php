@@ -24,9 +24,9 @@ $vat = 1600;
 
 $product = new \InternetMarketingSolutions\PackserviceSk\Import\Product();
 $product
-    ->setServiceid($serviceId)
-    ->setEan($ean)
-    ->setSku($sku)
+//    ->setServiceid($serviceId)
+//    ->setEan($ean)
+//    ->setSku($sku)
     ->setAmount($amount)
     ->setName($name)
     ->setPrice($price)
@@ -35,9 +35,22 @@ $product
 
 $package = new \InternetMarketingSolutions\PackserviceSk\Import\Package();
 $package
+    ->setId('0000001')
     ->setName('test')
     ->addProduct($product)
 ;
+
+$validator = \Symfony\Component\Validator\Validation::createValidatorBuilder()
+    ->enableAnnotationMapping(new \Doctrine\Common\Annotations\AnnotationReader())
+    ->getValidator()
+;
+
+$violations = $validator->validate($product);
+var_dump($violations);
+
+$violations = $validator->validate($package);
+var_dump($violations);
+
 
 $serializer = \JMS\Serializer\SerializerBuilder::create()->build();
 $test = $serializer->serialize($package, 'xml');
