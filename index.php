@@ -40,19 +40,28 @@ $package
     ->addProduct($product)
 ;
 
+$xml = new \InternetMarketingSolutions\PackserviceSk\Import\Xml();
+$xml->addPackage($package);
+$xml->addPackage($package);
+
+$annotationReader = new \Doctrine\Common\Annotations\AnnotationReader();
+
 $validator = \Symfony\Component\Validator\Validation::createValidatorBuilder()
-    ->enableAnnotationMapping(new \Doctrine\Common\Annotations\AnnotationReader())
+    ->enableAnnotationMapping($annotationReader)
     ->getValidator()
 ;
 
-$violations = $validator->validate($product);
+
+$violations = $validator->validate($xml);
 var_dump($violations);
 
-$violations = $validator->validate($package);
-var_dump($violations);
-
-
-$serializer = \JMS\Serializer\SerializerBuilder::create()->build();
-$test = $serializer->serialize($package, 'xml');
+$propertyNamingStrategy = new \JMS\Serializer\Naming\SerializedNameAnnotationStrategy(new \JMS\Serializer\Naming\CamelCaseNamingStrategy());
+$serializer = \JMS\Serializer\SerializerBuilder::create()
+    ->setAnnotationReader($annotationReader)
+    ->setPropertyNamingStrategy($propertyNamingStrategy)
+    ->setSerializationVisitor('xml', new \InternetMarketingSolutions\PackserviceSk\Serializer\PackageserviceSkXmlSerializationVisitor($propertyNamingStrategy))
+    ->build()
+;
+$test = $serializer->serialize($xml, 'xml');
 
 var_dump($test);
