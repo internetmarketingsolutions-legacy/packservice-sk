@@ -30,6 +30,11 @@ class Package
      */
     protected $delivery;
 
+    const DELIVERY_ECONOMY = 'posta';
+    const DELIVERY_PRIORITY = 'posta1';
+    const DELIVERY_COURIER = 'kurier';
+    const DELIVERY_PERSONALLY = 'osobne';
+
     /**
      * @var string
      * @Serializer\SerializedName("firma")
