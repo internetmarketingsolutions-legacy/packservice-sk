@@ -1,67 +1,44 @@
 <?php
 
+use Doctrine\Common\Annotations\AnnotationRegistry;
+use InternetMarketingSolutions\PackserviceSk\Import\Package;
+use InternetMarketingSolutions\PackserviceSk\Import\Xml;
+use InternetMarketingSolutions\PackserviceSk\PackserviceSk;
+use Payment\HttpClient\BuzzClient;
+
 $loader = require 'vendor/autoload.php';
+AnnotationRegistry::registerLoader(array($loader, 'loadClass'));
 
-// annotation registry
-\Doctrine\Common\Annotations\AnnotationRegistry::registerLoader(array($loader, 'loadClass'));
-
-$xml = new \InternetMarketingSolutions\PackserviceSk\Import\Xml();
+$xml = new Xml();
 $xml
     ->addPackage()
         ->setId('0000001')
-        ->setName('test')
+        ->setDelivery(Package::DELIVERY_ECONOMY)
+        ->setName('Hans Mustermann')
+        ->setStreet('Musterstrasse 0')
+        ->setZip('0000')
+        ->setCity('Musterort')
+        ->setCountry('CH')
         ->addProduct()
-            //->setServiceid('5901234123457')
-            //->setEan('5-901234-12345')
-            //->setSku('5-901234123457')
+            ->setSku('brand0000001')
             ->setAmount(2)
             ->setName('Product 1')
             ->setPrice(20000)
             ->setVat(1600)
         ->end()
         ->addProduct()
-            //->setServiceid('5901234123457')
-            //->setEan('5-901234-12345')
-            //->setSku('5-901234123457')
-            ->setAmount(1)
+            ->setSku('brand0000002')
+            ->setAmount(2)
             ->setName('Product 2')
             ->setPrice(30000)
             ->setVat(2400)
         ->end()
     ->end()
-    ->addPackage()
-        ->setId('0000002')
-        ->setName('test')
-        ->addProduct()
-            //->setServiceid('5901234123457')
-            //->setEan('5-901234-12345')
-            //->setSku('5-901234123457')
-            ->setAmount(3)
-            ->setName('Product 3')
-            ->setPrice(10000)
-            ->setVat(800)
-        ->end()
-    ->end()
 ;
 
-$annotationReader = new \Doctrine\Common\Annotations\AnnotationReader();
-
-$validator = \Symfony\Component\Validator\Validation::createValidatorBuilder()
-    ->enableAnnotationMapping($annotationReader)
-    ->getValidator()
-;
-
-
-$violations = $validator->validate($xml);
-var_dump($violations);
-
-$propertyNamingStrategy = new \JMS\Serializer\Naming\SerializedNameAnnotationStrategy(new \JMS\Serializer\Naming\CamelCaseNamingStrategy());
-$serializer = \JMS\Serializer\SerializerBuilder::create()
-    ->setAnnotationReader($annotationReader)
-    ->setPropertyNamingStrategy($propertyNamingStrategy)
-    ->setSerializationVisitor('xml', new \InternetMarketingSolutions\PackserviceSk\Serializer\PackageserviceSkXmlSerializationVisitor($propertyNamingStrategy))
-    ->build()
-;
-$test = $serializer->serialize($xml, 'xml');
-
-var_dump($test);
+$packageServiceSk = new PackserviceSk();
+$packageServiceSk->setHttpClient(new BuzzClient());
+$violationList = $packageServiceSk->validate($xml);
+if(!$violationList->count()) {
+    $packageServiceSk->import('idkey', 'apikey', $xml);
+}
