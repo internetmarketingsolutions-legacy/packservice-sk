@@ -3,12 +3,14 @@
 namespace InternetMarketingSolutions\PackserviceSk;
 
 use Doctrine\Common\Annotations\AnnotationReader;
+use InternetMarketingSolutions\PackserviceSk\Import\Response;
 use InternetMarketingSolutions\PackserviceSk\Import\Xml;
 use InternetMarketingSolutions\PackserviceSk\Serializer\PackageserviceSkXmlSerializationVisitor;
 use JMS\Serializer\Naming\CamelCaseNamingStrategy;
 use JMS\Serializer\Naming\SerializedNameAnnotationStrategy;
 use JMS\Serializer\SerializerBuilder;
 use JMS\Serializer\SerializerInterface;
+use JMS\Serializer\XmlDeserializationVisitor;
 use Payment\HttpClient\HttpClientInterface;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
@@ -112,6 +114,7 @@ class PackserviceSk
                 ->setAnnotationReader($this->getAnnotationReader())
                 ->setPropertyNamingStrategy($propertyNamingStrategy)
                 ->setSerializationVisitor('xml', new PackageserviceSkXmlSerializationVisitor($propertyNamingStrategy))
+                ->setDeserializationVisitor('xml', new XmlDeserializationVisitor($propertyNamingStrategy))
                 ->build()
             ;
         }
@@ -173,11 +176,18 @@ class PackserviceSk
         return $this->getValidator()->validate($data);
     }
 
+    /**
+     * @param string $idkey
+     * @param string $apikey
+     * @param Xml $xml
+     * @return Response
+     * @throws \Exception
+     */
     public function import($idkey, $apikey, Xml $xml)
     {
         $xml = $this->getSerializer()->serialize($xml, 'xml');
 
-        $response = $this
+        $httpResponse = $this
             ->getHttpClient()
             ->request(
                 HttpClientInterface::METHOD_POST,
@@ -187,15 +197,28 @@ class PackserviceSk
             )
         ;
 
-        $content = $response->getContent();
+        $content = $httpResponse->getContent();
         
-        if (200 !== $statusCode = $response->getStatusCode()) {
-        
+        if (200 !== $statusCode = $httpResponse->getStatusCode()) {
             if (403 === $statusCode) {
                  throw new \Exception(sprintf('Authorization error: %s', $content));
             }
             
             throw new \Exception(sprintf('Generic http error (%d): %s', $statusCode, $content));
         }
+
+        /** @var Response $response */
+        $response = $this
+            ->getSerializer()
+            ->deserialize($content, 'InternetMarketingSolutions\PackserviceSk\Import\Response', 'xml');
+
+        $shipmentResponse = $response->getShipment()->getResponse();
+
+        // assign bad input
+        if (strrpos($shipmentResponse, 'ERROR-badinput-') === 0) {
+            $response->getShipment()->setInputErrors(json_decode(substr($shipmentResponse, 15), true));
+        }
+
+        return $response;
     }
 }
