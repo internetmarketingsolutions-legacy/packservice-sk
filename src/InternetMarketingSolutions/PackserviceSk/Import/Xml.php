@@ -34,10 +34,13 @@ class Xml
         if(is_null($package)) {
             $package = new Package();
         }
+
         if (!$stopPropagation) {
             $package->setXml($this, true);
         }
+
         $this->packages->add($package);
+
         return $package;
     }
 
@@ -53,6 +56,7 @@ class Xml
         }
 
         $this->packages->removeElement($package);
+
         return $this;
     }
 

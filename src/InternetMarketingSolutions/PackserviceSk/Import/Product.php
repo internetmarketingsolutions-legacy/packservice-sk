@@ -20,18 +20,21 @@ class Product
     /**
      * @var string
      * @Serializer\SerializedName("idpol")
+     * @Serializer\Type("string")
      */
     protected $serviceid;
 
     /**
      * @var string
      * @Serializer\SerializedName("ean")
+     * @Serializer\Type("string")
      */
     protected $ean;
 
     /**
      * @var string
      * @Serializer\SerializedName("ref")
+     * @Serializer\Type("string")
      */
     protected $sku;
 
@@ -40,6 +43,7 @@ class Product
      * @Assert\NotNull()
      * @Assert\NotBlank()
      * @Serializer\SerializedName("pocet")
+     * @Serializer\Type("double")
      */
     protected $amount;
 
@@ -48,6 +52,7 @@ class Product
      * @Assert\NotNull()
      * @Assert\NotBlank()
      * @Serializer\SerializedName("nazov")
+     * @Serializer\Type("string")
      */
     protected $name;
 
@@ -56,6 +61,7 @@ class Product
      * @Assert\NotNull()
      * @Assert\NotBlank()
      * @Serializer\SerializedName("cena")
+     * @Serializer\Type("double")
      */
     protected $price;
 
@@ -64,6 +70,7 @@ class Product
      * @Assert\NotNull()
      * @Assert\NotBlank()
      * @Serializer\SerializedName("dph")
+     * @Serializer\Type("double")
      */
     protected $vat;
 

@@ -17,9 +17,10 @@ class Package
     protected $xml;
 
     /**
-     * @var int
+     * @var integer
      * @Assert\NotBlank()
      * @Serializer\SerializedName("id")
+     * @Serializer\Type("integer")
      */
     protected $id;
 
@@ -27,6 +28,7 @@ class Package
      * @var string
      * @Assert\NotBlank()
      * @Serializer\SerializedName("dodanie")
+     * @Serializer\Type("string")
      */
     protected $delivery;
 
@@ -38,6 +40,7 @@ class Package
     /**
      * @var string
      * @Serializer\SerializedName("firma")
+     * @Serializer\Type("string")
      */
     protected $company;
 
@@ -45,6 +48,7 @@ class Package
      * @var string
      * @Assert\NotBlank()
      * @Serializer\SerializedName("meno")
+     * @Serializer\Type("string")
      */
     protected $name;
 
@@ -52,6 +56,7 @@ class Package
      * @var string
      * @Assert\NotBlank()
      * @Serializer\SerializedName("ulica")
+     * @Serializer\Type("string")
      */
     protected $street;
 
@@ -59,6 +64,7 @@ class Package
      * @var string
      * @Assert\NotBlank()
      * @Serializer\SerializedName("psc")
+     * @Serializer\Type("string")
      */
     protected $zip;
 
@@ -66,144 +72,168 @@ class Package
      * @var string
      * @Assert\NotBlank()
      * @Serializer\SerializedName("mesto")
+     * @Serializer\Type("string")
      */
     protected $city;
 
     /**
      * @var string
      * @Serializer\SerializedName("stat")
+     * @Serializer\Type("string")
      */
     protected $country;
 
     /**
      * @var string
      * @Serializer\SerializedName("telefon")
+     * @Serializer\Type("string")
      */
     protected $phone;
 
     /**
      * @var string
      * @Serializer\SerializedName("email")
+     * @Serializer\Type("string")
      */
     protected $email;
 
     /**
      * @var float
      * @Serializer\SerializedName("hodnota")
+     * @Serializer\Type("double")
      */
     protected $valuepack;
 
     /**
      * @var float
      * @Serializer\SerializedName("dobierka")
+     * @Serializer\Type("double")
      */
     protected $cashondelivery;
 
     /**
      * @var string
      * @Serializer\SerializedName("doplndod")
+     * @Serializer\Type("string")
      */
     protected $additional;
 
     /**
      * @var string
      * @Serializer\SerializedName("poznamka")
+     * @Serializer\Type("string")
      */
     protected $memo;
 
     /**
      * @var string
      * @Serializer\SerializedName("poznamka_kurier")
+     * @Serializer\Type("string")
      */
     protected $memocourier;
 
     /**
      * @var string
      * @Serializer\SerializedName("faurl")
+     * @Serializer\Type("string")
      */
     protected $invoiceurl;
 
     /**
      * @var string
      * @Serializer\SerializedName("facislo")
+     * @Serializer\Type("string")
      */
     protected $invoicenumber;
 
     /**
      * @var string
      * @Serializer\SerializedName("fanazov")
+     * @Serializer\Type("string")
      */
     protected $invoicename;
 
     /**
      * @var string
      * @Serializer\SerializedName("faulica")
+     * @Serializer\Type("string")
      */
     protected $invoicestreet;
 
     /**
      * @var string
      * @Serializer\SerializedName("fapsc")
+     * @Serializer\Type("string")
      */
     protected $invoicezip;
 
     /**
      * @var string
      * @Serializer\SerializedName("famesto")
+     * @Serializer\Type("string")
      */
     protected $invoicecity;
 
     /**
      * @var string
      * @Serializer\SerializedName("fastat")
+     * @Serializer\Type("string")
      */
     protected $invoicecountry;
 
     /**
      * @var string
      * @Serializer\SerializedName("faico")
+     * @Serializer\Type("string")
      */
     protected $invoiceregistrynumber;
 
     /**
      * @var string
      * @Serializer\SerializedName("fadic")
+     * @Serializer\Type("string")
      */
     protected $invoicetaxnumber;
 
     /**
      * @var string
      * @Serializer\SerializedName("faicdph")
+     * @Serializer\Type("string")
      */
     protected $invoicevatnumber;
 
     /**
      * @var float
      * @Serializer\SerializedName("fasumabezdph")
+     * @Serializer\Type("double")
      */
     protected $invoicetotalwithouttax;
 
     /**
      * @var float
      * @Serializer\SerializedName("fasumasdph")
+     * @Serializer\Type("double")
      */
     protected $invoicetotal;
 
     /**
      * @var \DateTime
      * @Serializer\SerializedName("favystavena")
+     * @Serializer\Type("DateTime")
      */
     protected $invoicedateofissue;
 
     /**
      * @var \DateTime
      * @Serializer\SerializedName("fasplatna")
+     * @Serializer\Type("DateTime")
      */
     protected $invoiceduedate;
 
     /**
      * @var string
      * @Serializer\SerializedName("faprevodom")
+     * @Serializer\Type("string")
      */
     protected $invoicepaymentmethod;
 
@@ -255,7 +285,7 @@ class Package
     }
 
     /**
-     * @param int $id
+     * @param integer $id
      * @return $this
      */
     public function setId($id)
@@ -265,7 +295,7 @@ class Package
     }
 
     /**
-     * @return int
+     * @return integer
      */
     public function getId()
     {
