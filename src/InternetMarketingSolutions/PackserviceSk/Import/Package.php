@@ -83,6 +83,11 @@ class Package
      */
     protected $country;
 
+    const COUNTRY_AT = 'Rakúsko';
+    const COUNTRY_CH = 'Švajčiarsko';
+    const COUNTRY_DE = 'Nemecko';
+    const COUNTRY_SK = 'Slovenská republika';
+
     /**
      * @var string
      * @Serializer\SerializedName("telefon")
