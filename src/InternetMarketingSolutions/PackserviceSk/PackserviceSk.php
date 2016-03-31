@@ -198,12 +198,12 @@ class PackserviceSk
         ;
 
         $content = $httpResponse->getContent();
-        
+
         if (200 !== $statusCode = $httpResponse->getStatusCode()) {
             if (403 === $statusCode) {
-                 throw new \Exception(sprintf('Authorization error: %s', $content));
+                throw new \Exception(sprintf('Authorization error: %s', $content));
             }
-            
+
             throw new \Exception(sprintf('Generic http error (%d): %s', $statusCode, $content));
         }
 
