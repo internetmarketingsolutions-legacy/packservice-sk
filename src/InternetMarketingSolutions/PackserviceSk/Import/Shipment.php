@@ -31,10 +31,9 @@ class Shipment
     protected $response;
 
     /**
-     * @var string[]
-     * @Serializer\Exclude()
+     * @var string
      */
-    protected $inputErrors;
+    protected $error;
 
     /**
      * @return integer
@@ -85,18 +84,18 @@ class Shipment
     }
 
     /**
-     * @return \string[]
+     * @return string
      */
-    public function getInputErrors()
+    public function getError()
     {
-        return $this->inputErrors;
+        return $this->error;
     }
 
     /**
-     * @param \string[] $inputErrors
+     * @param string $error
      */
-    public function setInputErrors($inputErrors)
+    public function setError($error)
     {
-        $this->inputErrors = $inputErrors;
+        $this->error = $error;
     }
 }

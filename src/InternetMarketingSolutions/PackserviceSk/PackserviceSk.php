@@ -225,9 +225,9 @@ class PackserviceSk
 
         $shipmentResponse = $response->getShipment()->getResponse();
 
-        // assign bad input
-        if (strrpos($shipmentResponse, 'ERROR-badinput-') === 0) {
-            $response->getShipment()->setInputErrors(json_decode(substr($shipmentResponse, 15), true));
+        // assign error
+        if (strrpos($shipmentResponse, 'ERROR-') === 0) {
+            $response->getShipment()->setError(substr($shipmentResponse, 6));
         }
 
         return $response;
