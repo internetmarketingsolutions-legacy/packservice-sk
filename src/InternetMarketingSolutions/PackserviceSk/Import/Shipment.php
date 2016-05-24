@@ -32,6 +32,8 @@ class Shipment
 
     /**
      * @var string
+     * @Serializer\SerializedName("error")
+     * @Serializer\Type("string")
      */
     protected $error;
 
