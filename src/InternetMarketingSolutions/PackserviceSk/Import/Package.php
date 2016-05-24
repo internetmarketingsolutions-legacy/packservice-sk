@@ -1091,7 +1091,7 @@ class Package
      * @param $stopPropagation
      * @return $this
      */
-    public function removeProduct(Product $product, $stopPropagation = fals)
+    public function removeProduct(Product $product, $stopPropagation = false)
     {
         if (!$stopPropagation) {
             $product->setPackage(null, true);

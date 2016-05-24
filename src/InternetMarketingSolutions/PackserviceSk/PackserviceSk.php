@@ -177,15 +177,26 @@ class PackserviceSk
     }
 
     /**
+     * @param Xml $xml
+     * @return string
+     */
+    public function serialize(Xml $xml)
+    {
+        return $this->getSerializer()->serialize($xml, 'xml');
+    }
+
+    /**
      * @param string $idkey
      * @param string $apikey
-     * @param Xml $xml
+     * @param Xml|string $xml
      * @return Response
      * @throws \Exception
      */
-    public function import($idkey, $apikey, Xml $xml)
+    public function import($idkey, $apikey, $xml)
     {
-        $xml = $this->getSerializer()->serialize($xml, 'xml');
+        if ($xml instanceof Xml) {
+            $xml = $this->getSerializer()->serialize($xml, 'xml');
+        }
 
         $httpResponse = $this
             ->getHttpClient()
